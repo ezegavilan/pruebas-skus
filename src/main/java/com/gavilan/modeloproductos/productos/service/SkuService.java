@@ -7,4 +7,6 @@ public interface SkuService {
     Sku crearSkuProducto(Long productoId, Sku sku);
 
     void eliminarSku(Long skuId);
+
+    Integer generarSkusDeProducto(Long productoId);
 }
