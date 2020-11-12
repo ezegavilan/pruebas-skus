@@ -35,4 +35,15 @@ public class SkuController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
+    @DeleteMapping("/sku/{skuId}")
+    public ResponseEntity<String> eliminarSku(@PathVariable Long skuId) {
+
+        try {
+            skuService.eliminarSku(skuId);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>("ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

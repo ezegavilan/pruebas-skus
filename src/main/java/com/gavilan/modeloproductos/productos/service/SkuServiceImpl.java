@@ -56,6 +56,12 @@ public class SkuServiceImpl implements SkuService {
         return skuRepository.save(nuevoSku);
     }
 
+    @Transactional
+    @Override
+    public void eliminarSku(Long skuId) {
+        skuRepository.deleteById(skuId);
+    }
+
     private Producto getProducto(Long productoId) {
         return productoRepository.findById(productoId)
                 .orElseThrow(() -> new RuntimeException("No existe el producto"));
