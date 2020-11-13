@@ -104,7 +104,44 @@ public class SkuServiceImpl implements SkuService {
         }
 
         log.info("Número total de permutaciones a generar: " + permutacionesAGenerar.size());
-        return null;
+        int cantPermutacionesCreadas = 0;
+        if (!CollectionUtils.isEmpty(permutacionesAGenerar)) {
+            cantPermutacionesCreadas = this.persistirPermutacionesSku(producto, permutacionesAGenerar);
+        }
+
+        log.info("Permutaciones generadas: " + cantPermutacionesCreadas);
+
+        return cantPermutacionesCreadas;
+    }
+
+    private Integer persistirPermutacionesSku(Producto producto, List<List<ValorPropiedadProducto>> permutaciones) {
+        int cantPermutacionesCreadas = 0;
+
+        for (List<ValorPropiedadProducto> permutacion: permutaciones) {
+            if (permutacion.isEmpty()) continue;
+            Sku skuPermutado = Sku.builder()
+                    .nombre(producto.getNombre())
+                    .descripcion(null)
+                    .precio(null)
+                    .disponibilidad(null)
+                    .defaultProducto(null)
+                    .producto(producto)
+                    .valorPropiedadesProducto(permutacion).build();
+            String values = "";
+            for (ValorPropiedadProducto value: permutacion) {
+                values = values.concat(value.getValue().concat("/"));
+            }
+            skuPermutado.setValores(values);
+            Sku skuGuardado = this.skuRepository.save(skuPermutado);
+            producto.getSkus().add(skuGuardado);
+            cantPermutacionesCreadas++;
+        }
+
+        if (cantPermutacionesCreadas != 0) {
+            productoRepository.save(producto);
+        }
+
+        return cantPermutacionesCreadas;
     }
 
     private boolean esMismaPermutacion(List<ValorPropiedadProducto> permutacion1, List<ValorPropiedadProducto> permutacion2) {
