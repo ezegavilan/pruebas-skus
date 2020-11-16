@@ -56,6 +56,11 @@ public class ProductoServiceImpl implements ProductoService {
         return this.productoRepository.findAll();
     }
 
+    @Override
+    public List<Sku> obtenerSkusProducto(Long productoId) {
+        return this.getProducto(productoId).getSkus();
+    }
+
     @Transactional(readOnly = true)
     @Override
     public Producto verProducto(Long productoId) {

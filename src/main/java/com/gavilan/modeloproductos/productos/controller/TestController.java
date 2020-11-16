@@ -4,6 +4,7 @@ import com.gavilan.modeloproductos.productos.model.Producto;
 import com.gavilan.modeloproductos.productos.model.Sku;
 import com.gavilan.modeloproductos.productos.repository.ProductoRepository;
 import com.gavilan.modeloproductos.productos.repository.SkuRepository;
+import com.gavilan.modeloproductos.productos.service.ProductoService;
 import com.gavilan.modeloproductos.productos.service.SkuService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,7 @@ public class TestController {
     private final ProductoRepository productoRepository;
     private final SkuRepository skuRepository;
     private final SkuService skuService;
+    private final ProductoService productoService;
 
     @GetMapping("/test/productos")
     public ResponseEntity<List<Producto>> listarProductos() {
@@ -40,4 +42,8 @@ public class TestController {
         return new ResponseEntity<>(numero, HttpStatus.OK);
     }
 
+    @GetMapping("/test/productos/{productoId}/skus")
+    public ResponseEntity<List<Sku>> getSkus(@PathVariable Long productoId) {
+        return new ResponseEntity<>(productoService.obtenerSkusProducto(productoId), HttpStatus.OK);
+    }
 }
