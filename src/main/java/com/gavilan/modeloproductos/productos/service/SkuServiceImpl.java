@@ -150,7 +150,7 @@ public class SkuServiceImpl implements SkuService {
 
             Collection<Long> permutacion2Ids = com.gavilan.modeloproductos.utils.CollectionUtils.collect(permutacion2, input -> ((ValorPropiedadProducto) input).getId());
 
-            return permutacion1Ids.contains(permutacion2Ids);
+            return permutacion1Ids.containsAll(permutacion2Ids);
         }
 
         return false;
